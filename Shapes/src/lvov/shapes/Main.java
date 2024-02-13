@@ -31,7 +31,7 @@ public class Main {
         }
 
         if (shapes.length == 1) {
-            return shapes[0];
+            throw  new IllegalArgumentException("Массив состоит из 1 фигуры");
         }
 
         Arrays.sort(shapes, new ShapePerimeterComparator());

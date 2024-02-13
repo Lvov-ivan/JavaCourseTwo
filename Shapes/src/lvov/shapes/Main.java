@@ -16,12 +16,24 @@ public class Main {
     }
 
     public static Shape getShapeWithMaxArea(Shape[] shapes) {
+        if (shapes.length == 0) {
+            throw new IllegalArgumentException("Массив фигур пуст");
+        }
+
         Arrays.sort(shapes, new ShapeAreaComparator());
 
         return shapes[shapes.length - 1];
     }
 
     public static Shape getShapeWithSecondPerimeter(Shape[] shapes) {
+        if (shapes.length == 0) {
+            throw new IllegalArgumentException("Массив фигур пуст");
+        }
+
+        if (shapes.length == 1) {
+            return shapes[0];
+        }
+
         Arrays.sort(shapes, new ShapePerimeterComparator());
 
         return shapes[shapes.length - 2];

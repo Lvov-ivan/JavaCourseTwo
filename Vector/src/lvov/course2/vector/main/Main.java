@@ -1,6 +1,8 @@
-package lvov.vector;
+package lvov.course2.vector.main;
 
-public class VectorMain {
+import lvov.course2.vector.Vector;
+
+public class Main {
     public static void main(String[] args) {
         double[] array1 = {1, 3};
         double[] array2 = {1, 2, 1};

@@ -1,4 +1,4 @@
-package lvov.vector;
+package lvov.course2.vector;
 
 public class Vector {
     private double[] elements;
@@ -42,6 +42,7 @@ public class Vector {
         return elements.length;
     }
 
+    @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -130,6 +131,7 @@ public class Vector {
         elements[index] = element;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj == this) {
             return true;

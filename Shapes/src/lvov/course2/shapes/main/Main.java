@@ -1,18 +1,16 @@
-package lvov.shapes;
+package lvov.course2.shapes.main;
 
-import lvov.shapes.comparers.ShapeAreaComparator;
-import lvov.shapes.comparers.ShapePerimeterComparator;
-import lvov.shapes.shapes.*;
+import lvov.course2.shapes.*;
+import lvov.course2.shapes.comparators.ShapePerimeterComparator;
+import lvov.course2.shapes.comparators.ShapeAreaComparator;
 
 import java.util.Arrays;
 
 public class Main {
     public static void print(Shape shape) {
         System.out.println(shape);
-        System.out.printf("Площадь фигуры = %.2f", shape.getArea());
-        System.out.println();
-        System.out.printf("Периметр фигуры %.2f", shape.getPerimeter());
-        System.out.println();
+        System.out.printf("Площадь фигуры = %.2f %n", shape.getArea());
+        System.out.printf("Периметр фигуры %.2f %n", shape.getPerimeter());
     }
 
     public static Shape getShapeWithMaxArea(Shape[] shapes) {
@@ -31,7 +29,7 @@ public class Main {
         }
 
         if (shapes.length == 1) {
-            throw  new IllegalArgumentException("Массив состоит из 1 фигуры");
+            throw new IllegalArgumentException("Массив состоит из 1 фигуры");
         }
 
         Arrays.sort(shapes, new ShapePerimeterComparator());

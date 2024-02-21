@@ -1,4 +1,4 @@
-package lvov.shapes.shapes;
+package lvov.course2.shapes;
 
 public class Rectangle implements Shape {
     private double width;
@@ -14,7 +14,7 @@ public class Rectangle implements Shape {
         return width;
     }
 
-    public void setWidth(double width){
+    public void setWidth(double width) {
         this.width = width;
     }
 
@@ -23,36 +23,38 @@ public class Rectangle implements Shape {
         return height;
     }
 
-    public void setHeight(double height){
+    public void setHeight(double height) {
         this.height = height;
     }
 
     @Override
-    public Double getArea() {
+    public double getArea() {
         return width * height;
     }
 
     @Override
-    public Double getPerimeter() {
+    public double getPerimeter() {
         return (width + height) * 2;
     }
 
-    public String toString(){
+    @Override
+    public String toString() {
         return "Прямоугольник: высота = " + height + ", ширина = " + width;
     }
 
+    @Override
     public boolean equals(Object obj) {
-        if (obj == this){
+        if (obj == this) {
             return true;
         }
 
-        if (obj == null || obj.getClass() != getClass()){
+        if (obj == null || obj.getClass() != getClass()) {
             return false;
         }
 
         Rectangle rectangle = (Rectangle) obj;
 
-        return width == rectangle.getWidth() && height == rectangle.getHeight();
+        return width == rectangle.width && height == rectangle.height;
     }
 
     @Override

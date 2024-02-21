@@ -1,17 +1,17 @@
-package lvov.shapes.shapes;
+package lvov.course2.shapes;
 
 public class Square implements Shape {
     private double sideLength;
+
+    public Square(double sideLength) {
+        this.sideLength = sideLength;
+    }
 
     public double getSideLength() {
         return sideLength;
     }
 
     public void setSideLength(double sideLength) {
-        this.sideLength = sideLength;
-    }
-
-    public Square (double sideLength){
         this.sideLength = sideLength;
     }
 
@@ -26,25 +26,27 @@ public class Square implements Shape {
     }
 
     @Override
-    public Double getArea() {
+    public double getArea() {
         return sideLength * sideLength;
     }
 
     @Override
-    public Double getPerimeter() {
+    public double getPerimeter() {
         return sideLength * 4;
     }
 
-    public String toString(){
+    @Override
+    public String toString() {
         return "Квадрат: сторона = " + sideLength;
     }
 
+    @Override
     public boolean equals(Object obj) {
-        if (obj == this){
+        if (obj == this) {
             return true;
         }
 
-        if (obj == null || obj.getClass() != getClass()){
+        if (obj == null || obj.getClass() != getClass()) {
             return false;
         }
 

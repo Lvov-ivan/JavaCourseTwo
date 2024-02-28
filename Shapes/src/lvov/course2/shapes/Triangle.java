@@ -75,8 +75,8 @@ public class Triangle implements Shape {
         return Math.max(Math.max(y1, y2), y3) - Math.min(Math.min(y1, y2), y3);
     }
 
-    private double getSideLength(double xPoint1, double yPoint1, double xPoint2, double yPoint2) {
-        return Math.sqrt(Math.pow(xPoint2 - xPoint1, 2) + Math.pow(yPoint2 - yPoint1, 2));
+    private static double getSideLength(double x1, double y1, double x2, double y2) {
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
     @Override

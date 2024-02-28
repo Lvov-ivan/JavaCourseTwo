@@ -9,8 +9,8 @@ import java.util.Arrays;
 public class Main {
     public static void print(Shape shape) {
         System.out.println(shape);
-        System.out.printf("Площадь фигуры = %.2f %n", shape.getArea());
-        System.out.printf("Периметр фигуры %.2f %n", shape.getPerimeter());
+        System.out.printf("Площадь фигуры = %.2f%n", shape.getArea());
+        System.out.printf("Периметр фигуры = %.2f%n", shape.getPerimeter());
     }
 
     public static Shape getShapeWithMaxArea(Shape[] shapes) {
@@ -51,6 +51,7 @@ public class Main {
 
         System.out.println("Фигура с максимальной площадью:");
         print(getShapeWithMaxArea(shapes));
+        System.out.println();
 
         System.out.println("Фигура со вторым по размеру периметром:");
         print(getShapeWithSecondPerimeter(shapes));

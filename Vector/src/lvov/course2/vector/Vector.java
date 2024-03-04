@@ -7,7 +7,7 @@ public class Vector {
 
     public Vector(int size) {
         if (size <= 0) {
-            throw new IllegalArgumentException("Размерность вектора не может быть меньше или равна 0. Размер = " + size);
+            throw new IllegalArgumentException("Размерность вектора не может быть меньше или равна 0. Размерность = " + size);
         }
 
         elements = new double[size];
@@ -19,7 +19,7 @@ public class Vector {
 
     public Vector(double[] array) {
         if (array.length == 0) {
-            throw new IllegalArgumentException("Размерность вектора не может быть равна 0, длина передаваемого массива "
+            throw new IllegalArgumentException("Размерность вектора не может быть равна 0, длина переданного массива = "
                     + array.length);
         }
 
@@ -27,12 +27,12 @@ public class Vector {
     }
 
     public Vector(int size, double[] array) {
-        if (size == 0) {
-            throw new IllegalArgumentException("Размерность вектора не может быть равна 0, длина передаваемого массива "
+        if (size <= 0) {
+            throw new IllegalArgumentException("Размерность вектора не может быть меньше или равна 0. Размерность = "
                     + size);
         }
 
-        elements = Arrays.copyOf(array, Math.max(size, array.length));
+        elements = Arrays.copyOf(array, size);
     }
 
     public int getSize() {
@@ -59,23 +59,23 @@ public class Vector {
     }
 
     public void add(Vector vector) {
-        double[] newElements = Arrays.copyOf(elements, Math.max(elements.length, vector.elements.length));
-
-        for (int i = 0; i < vector.elements.length; i++) {
-            newElements[i] += vector.elements[i];
+        if (elements.length < vector.elements.length) {
+            elements = Arrays.copyOf(elements, vector.elements.length);
         }
 
-        elements = newElements;
+        for (int i = 0; i < vector.elements.length; i++) {
+            elements[i] += vector.elements[i];
+        }
     }
 
     public void subtract(Vector vector) {
-        double[] newElements = Arrays.copyOf(elements, Math.max(elements.length, vector.elements.length));
-
-        for (int i = 0; i < vector.elements.length; i++) {
-            newElements[i] -= vector.elements[i];
+        if (elements.length < vector.elements.length) {
+            elements = Arrays.copyOf(elements, vector.elements.length);
         }
 
-        elements = newElements;
+        for (int i = 0; i < vector.elements.length; i++) {
+            elements[i] -= vector.elements[i];
+        }
     }
 
     public void multiplyByScalar(double scalar) {
@@ -99,26 +99,18 @@ public class Vector {
     }
 
     public double getElement(int index) {
-        if (index >= elements.length) {
-            throw new ArrayIndexOutOfBoundsException("Передаваемый индекс больше длины вектора. Переданный индекс "
-                    + index + "Допустимые границы {0, " + (elements.length - 1) + "}");
-        }
-
-        if (index < 0) {
-            throw new ArrayIndexOutOfBoundsException("Индекс не может быть меньше 0");
+        if (index >= elements.length || index < 0) {
+            throw new IndexOutOfBoundsException("Передаваемый индекс не может быть меньше 0 и больше длины вектора. Переданный индекс = "
+                    + index + ". Допустимые границы {0, " + (elements.length - 1) + "}");
         }
 
         return elements[index];
     }
 
     public void setElement(int index, double element) {
-        if (index >= elements.length) {
-            throw new ArrayIndexOutOfBoundsException("Передаваемый индекс больше длины вектора. Переданный индекс "
+        if (index >= elements.length || index < 0) {
+            throw new IndexOutOfBoundsException("Передаваемый индекс не может быть меньше 0 и больше длины вектора. Переданный индекс = "
                     + index + ". Допустимые границы {0, " + (elements.length - 1) + "}");
-        }
-
-        if (index < 0) {
-            throw new ArrayIndexOutOfBoundsException("Индекс не может быть меньше 0");
         }
 
         elements[index] = element;
@@ -136,11 +128,7 @@ public class Vector {
 
         Vector vector = (Vector) obj;
 
-        if (elements.length != vector.elements.length) {
-            return false;
-        }
-
-        return !Arrays.equals(elements, vector.elements);
+        return Arrays.equals(elements, vector.elements);
     }
 
     @Override
@@ -162,10 +150,11 @@ public class Vector {
         return resultVector;
     }
 
-    public static double getScalarMultiply(Vector vector1, Vector vector2) {
+    public static double getScalarProduct(Vector vector1, Vector vector2) {
         double result = 0;
+        int minLength = Math.min(vector1.elements.length, vector2.elements.length);
 
-        for (int i = 0; i < Math.min(vector1.elements.length, vector2.elements.length); i++) {
+        for (int i = 0; i < minLength; i++) {
             result += vector1.elements[i] * vector2.elements[i];
         }
 

@@ -7,7 +7,8 @@ public class Vector {
 
     public Vector(int size) {
         if (size <= 0) {
-            throw new IllegalArgumentException("Размерность вектора не может быть меньше или равна 0. Размерность = " + size);
+            throw new IllegalArgumentException("Размерность вектора не может быть меньше или равна 0. Размерность = "
+                    + size);
         }
 
         elements = new double[size];
@@ -99,8 +100,8 @@ public class Vector {
     }
 
     public double getElement(int index) {
-        if (index >= elements.length || index < 0) {
-            throw new IndexOutOfBoundsException("Передаваемый индекс не может быть меньше 0 и больше длины вектора. Переданный индекс = "
+        if (index < 0 || index >= elements.length) {
+            throw new IllegalArgumentException("Передаваемый индекс не может быть меньше 0 и больше длины вектора. Переданный индекс = "
                     + index + ". Допустимые границы {0, " + (elements.length - 1) + "}");
         }
 
@@ -108,8 +109,8 @@ public class Vector {
     }
 
     public void setElement(int index, double element) {
-        if (index >= elements.length || index < 0) {
-            throw new IndexOutOfBoundsException("Передаваемый индекс не может быть меньше 0 и больше длины вектора. Переданный индекс = "
+        if (index < 0 || index >= elements.length) {
+            throw new IllegalArgumentException("Передаваемый индекс не может быть меньше 0 и больше длины вектора. Переданный индекс = "
                     + index + ". Допустимые границы {0, " + (elements.length - 1) + "}");
         }
 
@@ -152,9 +153,9 @@ public class Vector {
 
     public static double getScalarProduct(Vector vector1, Vector vector2) {
         double result = 0;
-        int minLength = Math.min(vector1.elements.length, vector2.elements.length);
+        int minSize = Math.min(vector1.elements.length, vector2.elements.length);
 
-        for (int i = 0; i < minLength; i++) {
+        for (int i = 0; i < minSize; i++) {
             result += vector1.elements[i] * vector2.elements[i];
         }
 

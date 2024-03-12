@@ -1,14 +1,19 @@
 package lvov.course2.list;
 
-public class SinglyLinkedList<T> {
-    private ListItem<T> head;
+import java.util.Objects;
+
+public class SinglyLinkedList<E> {
+    private ListItem<E> head;
     private int count;
 
     public int getCount() {
         return count;
     }
 
-    public T getFirst() {
+    public E getFirst() {
+        if (count == 0) {
+            throw new NullPointerException("Список пустой");
+        }
         return head.getData();
     }
 
@@ -22,9 +27,9 @@ public class SinglyLinkedList<T> {
 
         stringBuilder.append('[');
 
-        for (ListItem<T> currentNode = head; currentNode != null; currentNode = currentNode.getNext()) {
+        for (ListItem<E> node = head; node != null; node = node.getNext()) {
             stringBuilder
-                    .append(currentNode.getData())
+                    .append(node.getData())
                     .append(", ");
         }
 
@@ -35,99 +40,93 @@ public class SinglyLinkedList<T> {
         return stringBuilder.toString();
     }
 
-    public void addFirst(T data) {
+    public void addFirst(E data) {
         head = new ListItem<>(data, head);
 
         count++;
     }
 
-    public void addLast(T data) {
-        if (count == 0) {
-            addFirst(data);
-        } else {
-            insertNodeByIndex(count, data);
-        }
+    public void addLast(E data) {
+        addByIndex(count, data);
     }
 
-    private ListItem<T> iterateToNode(int index) {
-        int i = 0;
-        ListItem<T> currentNode;
+    private ListItem<E> getNode(int index) {
+        ListItem<E> node = head;
 
-        for (currentNode = head; currentNode != null; currentNode = currentNode.getNext()) {
-            if (i == index) {
-                break;
-            }
-
-            i++;
+        for (int i = 0; i < index; i++) {
+            node = node.getNext();
         }
 
-        return currentNode;
+        return node;
     }
 
-    public T getDataByIndex(int index) {
+    public E getByIndex(int index) {
         checkIndex(index);
 
-        return iterateToNode(index).getData();
+        return getNode(index).getData();
     }
 
-    public T setDataByIndex(int index, T data) {
+    public E setByIndex(int index, E data) {
         checkIndex(index);
 
-        ListItem<T> currentNode = iterateToNode(index);
+        ListItem<E> node = getNode(index);
 
-        T oldData = currentNode.getData();
-        currentNode.setData(data);
+        E oldData = node.getData();
+        node.setData(data);
 
         return oldData;
     }
 
-    public T removeNodeByIndex(int index) {
+    public E removeByIndex(int index) {
         checkIndex(index);
 
         if (index == 0) {
-            return removeFirstNode();
+            return removeFirst();
         }
 
-        ListItem<T> previousNode = iterateToNode(index - 1);
-        ListItem<T> currentNode = iterateToNode(index);
+        ListItem<E> previousNode = getNode(index - 1);
+        ListItem<E> currentNode = previousNode.getNext();
         previousNode.setNext(currentNode.getNext());
         count--;
 
         return currentNode.getData();
     }
 
-    public void insertFirstNode(T data) {
-        addFirst(data);
-    }
-
-    public void insertNodeByIndex(int index, T data) {
-        checkIndex(index);
+    public void addByIndex(int index, E data) {
+        if (index < 0) {
+            throw new IndexOutOfBoundsException("Индекс не может быть отрицательным. Переданный индекс = " + index);
+        }
 
         if (index == 0) {
             addFirst(data);
             return;
         }
 
-        ListItem<T> previousNode = iterateToNode(index - 1);
-        ListItem<T> currentNode = previousNode.getNext();
+        if (index > count) {
+            throw new IndexOutOfBoundsException("Индекс не может быть больше размера списка. " +
+                    "Допустимые границы от 0 до " + count + " Передаваемый индекс = " + index);
+        }
+
+        ListItem<E> previousNode = getNode(index - 1);
+        ListItem<E> currentNode = previousNode.getNext();
         previousNode.setNext(new ListItem<>(data, currentNode));
 
         count++;
     }
 
-    public boolean removeNodeByData(T data) {
-        for (ListItem<T> currentNode = head, previousNode = null; currentNode != null; previousNode = currentNode, currentNode = currentNode.getNext()) {
-            if (head.getData().equals(data)) {
-                removeFirstNode();
-                return true;
-            }
+    public boolean removeByData(E data) {
+        if (Objects.equals(head.getData(), data) || head.getData().equals(data)) {
+            removeFirst();
+            return true;
+        }
 
-            if (currentNode.getData() == null && data != null) {
+        for (ListItem<E> currentNode = head, previousNode = null; currentNode != null; previousNode = currentNode, currentNode = currentNode.getNext()) {
+            if ((Objects.equals(currentNode.getData(), null)) && !Objects.equals(data, null)) {
                 continue;
             }
 
-            if (currentNode.getData() == null && data == null || currentNode.getData().equals(data)) {
-                assert previousNode != null;
+            if ((Objects.equals(currentNode.getData(), data)) || currentNode.getData().equals(data)) {
+                assert !Objects.equals(previousNode, null);
                 previousNode.setNext(currentNode.getNext());
                 count--;
 
@@ -138,20 +137,28 @@ public class SinglyLinkedList<T> {
         return false;
     }
 
-    public T removeFirstNode() {
-        T deletedNodeData = head.getData();
+    public E removeFirst() {
+        if (count == 0) {
+            throw new NullPointerException("Список пустой");
+        }
+
+        E removedData = head.getData();
         head = head.getNext();
         count--;
 
-        return deletedNodeData;
+        return removedData;
     }
 
     public void revert() {
-        ListItem<T> currentNode = head;
-        ListItem<T> previousNode = null;
+        if (count == 0) {
+            return;
+        }
+
+        ListItem<E> currentNode = head;
+        ListItem<E> previousNode = null;
 
         while (currentNode.getNext() != null) {
-            ListItem<T> nextNode = currentNode.getNext();
+            ListItem<E> nextNode = currentNode.getNext();
             currentNode.setNext(previousNode);
             previousNode = currentNode;
             currentNode = nextNode;
@@ -161,36 +168,30 @@ public class SinglyLinkedList<T> {
         head = currentNode;
     }
 
-    public SinglyLinkedList<T> copy() {
-        SinglyLinkedList<T> newList = new SinglyLinkedList<>();
+    public SinglyLinkedList<E> copy() {
+        SinglyLinkedList<E> copiedList = new SinglyLinkedList<>();
+
         if (count == 0) {
-            return newList;
+            return copiedList;
         }
 
-        ListItem<T> lastNodeNewList = new ListItem<>(head.getData());
-        newList.head = lastNodeNewList;
+        ListItem<E> copiedListNode = new ListItem<>(head.getData());
+        copiedList.head = copiedListNode;
 
-        newList.count++;
+        copiedList.count++;
 
-        for (ListItem<T> currentNode = head.getNext(); currentNode != null; currentNode = currentNode.getNext()) {
-            ListItem<T> newNode = new ListItem<>(currentNode.getData());
-            lastNodeNewList.setNext(newNode);
-            lastNodeNewList = newNode;
-
-            newList.count++;
+        for (ListItem<E> currentNode = head.getNext(); currentNode != null; currentNode = currentNode.getNext(), copiedList.count++) {
+            copiedListNode.setNext(new ListItem<>(currentNode.getData()));
+            copiedListNode = copiedListNode.getNext();
         }
 
-        return newList;
+        return copiedList;
     }
 
     private void checkIndex(int index) {
-        if (index < 0) {
-            throw new IndexOutOfBoundsException("Индекс не может быть отрицательным. Передаваемый индекс = " + index);
-        }
-
-        if (index > count) {
-            throw new IndexOutOfBoundsException("Индекс не может быть больше размера списка. Допустимые границы от 0 до " + count +
-                    " Передаваемый индекс = " + index);
+        if (index < 0 || index >= count) {
+            throw new IndexOutOfBoundsException("Индекс не может быть отрицательным или больше размера списка. " +
+                    "Допустимые границы от 0 до " + (count - 1) + " Передаваемый индекс = " + index);
         }
     }
 }

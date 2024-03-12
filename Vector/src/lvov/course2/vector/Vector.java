@@ -101,7 +101,7 @@ public class Vector {
 
     public double getElement(int index) {
         if (index < 0 || index >= elements.length) {
-            throw new IllegalArgumentException("Передаваемый индекс не может быть меньше 0 и больше длины вектора. Переданный индекс = "
+            throw new IndexOutOfBoundsException("Передаваемый индекс не может быть меньше 0 или больше длины вектора. Переданный индекс = "
                     + index + ". Допустимые границы {0, " + (elements.length - 1) + "}");
         }
 
@@ -110,7 +110,7 @@ public class Vector {
 
     public void setElement(int index, double element) {
         if (index < 0 || index >= elements.length) {
-            throw new IllegalArgumentException("Передаваемый индекс не может быть меньше 0 и больше длины вектора. Переданный индекс = "
+            throw new IndexOutOfBoundsException("Передаваемый индекс не может быть меньше 0 или больше длины вектора. Переданный индекс = "
                     + index + ". Допустимые границы {0, " + (elements.length - 1) + "}");
         }
 

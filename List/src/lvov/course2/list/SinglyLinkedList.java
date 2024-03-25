@@ -1,5 +1,6 @@
 package lvov.course2.list;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class SinglyLinkedList<E> {
@@ -12,8 +13,9 @@ public class SinglyLinkedList<E> {
 
     public E getFirst() {
         if (count == 0) {
-            throw new NullPointerException("Список пустой");
+            throw new NoSuchElementException("Список пустой");
         }
+
         return head.getData();
     }
 
@@ -42,7 +44,6 @@ public class SinglyLinkedList<E> {
 
     public void addFirst(E data) {
         head = new ListItem<>(data, head);
-
         count++;
     }
 
@@ -93,8 +94,9 @@ public class SinglyLinkedList<E> {
     }
 
     public void addByIndex(int index, E data) {
-        if (index < 0) {
-            throw new IndexOutOfBoundsException("Индекс не может быть отрицательным. Переданный индекс = " + index);
+        if (index < 0 || index > count) {
+            throw new IndexOutOfBoundsException("Индекс не может быть отрицательным или больше размера списка. " +
+                    "Допустимые границы от 0 до " + count + " Передаваемый индекс = " + index);
         }
 
         if (index == 0) {
@@ -102,31 +104,48 @@ public class SinglyLinkedList<E> {
             return;
         }
 
-        if (index > count) {
-            throw new IndexOutOfBoundsException("Индекс не может быть больше размера списка. " +
-                    "Допустимые границы от 0 до " + count + " Передаваемый индекс = " + index);
-        }
 
         ListItem<E> previousNode = getNode(index - 1);
-        ListItem<E> currentNode = previousNode.getNext();
-        previousNode.setNext(new ListItem<>(data, currentNode));
+        previousNode.setNext(new ListItem<>(data, previousNode.getNext()));
 
         count++;
     }
 
+//    public boolean removeByData(E data) {
+//        if (Objects.equals(head.getData(), data) || head.getData().equals(data)) {
+//            removeFirst();
+//            return true;
+//        }
+//
+//        for (ListItem<E> currentNode = head.getNext(), previousNode = head; currentNode != null; previousNode = currentNode, currentNode = currentNode.getNext()) {
+//            if (Objects.equals(currentNode.getData(), null) && !Objects.equals(data, null)) {
+//                continue;
+//            }
+//
+//            if ((Objects.equals(currentNode.getData(), data)) || currentNode.getData().equals(data)) {
+//                assert !Objects.equals(previousNode, null);
+//                previousNode.setNext(currentNode.getNext());
+//                count--;
+//
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
+
     public boolean removeByData(E data) {
-        if (Objects.equals(head.getData(), data) || head.getData().equals(data)) {
+        if (count == 0) {
+            throw new NoSuchElementException("Список пустой");
+        }
+
+        if (Objects.equals(head.getData(), data)) {
             removeFirst();
             return true;
         }
 
-        for (ListItem<E> currentNode = head, previousNode = null; currentNode != null; previousNode = currentNode, currentNode = currentNode.getNext()) {
-            if ((Objects.equals(currentNode.getData(), null)) && !Objects.equals(data, null)) {
-                continue;
-            }
-
-            if ((Objects.equals(currentNode.getData(), data)) || currentNode.getData().equals(data)) {
-                assert !Objects.equals(previousNode, null);
+        for (ListItem<E> currentNode = head.getNext(), previousNode = head; currentNode != null; previousNode = currentNode, currentNode = currentNode.getNext()) {
+            if (Objects.equals(currentNode.getData(), data)) {
                 previousNode.setNext(currentNode.getNext());
                 count--;
 
@@ -139,7 +158,7 @@ public class SinglyLinkedList<E> {
 
     public E removeFirst() {
         if (count == 0) {
-            throw new NullPointerException("Список пустой");
+            throw new NoSuchElementException("Список пустой");
         }
 
         E removedData = head.getData();
@@ -157,15 +176,14 @@ public class SinglyLinkedList<E> {
         ListItem<E> currentNode = head;
         ListItem<E> previousNode = null;
 
-        while (currentNode.getNext() != null) {
+        while (currentNode != null) {
             ListItem<E> nextNode = currentNode.getNext();
             currentNode.setNext(previousNode);
             previousNode = currentNode;
             currentNode = nextNode;
         }
 
-        currentNode.setNext(previousNode);
-        head = currentNode;
+        head = previousNode;
     }
 
     public SinglyLinkedList<E> copy() {
@@ -176,11 +194,10 @@ public class SinglyLinkedList<E> {
         }
 
         ListItem<E> copiedListNode = new ListItem<>(head.getData());
+        copiedList.count = count;
         copiedList.head = copiedListNode;
 
-        copiedList.count++;
-
-        for (ListItem<E> currentNode = head.getNext(); currentNode != null; currentNode = currentNode.getNext(), copiedList.count++) {
+        for (ListItem<E> currentNode = head.getNext(); currentNode != null; currentNode = currentNode.getNext()) {
             copiedListNode.setNext(new ListItem<>(currentNode.getData()));
             copiedListNode = copiedListNode.getNext();
         }
@@ -190,8 +207,8 @@ public class SinglyLinkedList<E> {
 
     private void checkIndex(int index) {
         if (index < 0 || index >= count) {
-            throw new IndexOutOfBoundsException("Индекс не может быть отрицательным или больше размера списка. " +
-                    "Допустимые границы от 0 до " + (count - 1) + " Передаваемый индекс = " + index);
+            throw new IndexOutOfBoundsException("Индекс не может быть отрицательным или равным размеру списка. " +
+                    "Допустимые границы от 0 до " + (count - 1) + ". Передаваемый индекс = " + index);
         }
     }
 }

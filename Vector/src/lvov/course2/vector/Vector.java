@@ -100,18 +100,20 @@ public class Vector {
     }
 
     public double getElement(int index) {
-        if (index < 0 || index > elements.length - 1) {
-            throw new IndexOutOfBoundsException("Передаваемый индекс не может быть меньше 0 или больше размерности " +
-                    "вектора. Переданный индекс = " + index + ". Допустимые границы {0, " + (elements.length - 1) + "}");
+        if (index < 0 || index >= elements.length) {
+            throw new IndexOutOfBoundsException("Переданный индекс не может быть отрицательным, больше или равным " +
+                    "размерности вектора. Переданный индекс = " + index + ". Допустимые границы {0, " +
+                    (elements.length - 1) + "}");
         }
 
         return elements[index];
     }
 
     public void setElement(int index, double element) {
-        if (index < 0 || index > elements.length - 1) {
-            throw new IndexOutOfBoundsException("Передаваемый индекс не может быть меньше 0 или больше размерности " +
-                    "вектора. Переданный индекс = " + index + ". Допустимые границы {0, " + (elements.length - 1) + "}");
+        if (index < 0 || index >= elements.length) {
+            throw new IndexOutOfBoundsException("Переданный индекс не может быть отрицательным, больше или равным " +
+                    "размерности вектора. Переданный индекс = " + index + ". Допустимые границы {0, " +
+                    (elements.length - 1) + "}");
         }
 
         elements[index] = element;

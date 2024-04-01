@@ -96,7 +96,7 @@ public class SinglyLinkedList<E> {
     public void addByIndex(int index, E data) {
         if (index < 0 || index > count) {
             throw new IndexOutOfBoundsException("Индекс не может быть отрицательным или больше размера списка. " +
-                    "Допустимые границы от 0 до " + count + " Передаваемый индекс = " + index);
+                    "Допустимые границы от 0 до " + count + ". Передаваемый индекс = " + index);
         }
 
         if (index == 0) {
@@ -104,39 +104,15 @@ public class SinglyLinkedList<E> {
             return;
         }
 
-
         ListItem<E> previousNode = getNode(index - 1);
         previousNode.setNext(new ListItem<>(data, previousNode.getNext()));
 
         count++;
     }
 
-//    public boolean removeByData(E data) {
-//        if (Objects.equals(head.getData(), data) || head.getData().equals(data)) {
-//            removeFirst();
-//            return true;
-//        }
-//
-//        for (ListItem<E> currentNode = head.getNext(), previousNode = head; currentNode != null; previousNode = currentNode, currentNode = currentNode.getNext()) {
-//            if (Objects.equals(currentNode.getData(), null) && !Objects.equals(data, null)) {
-//                continue;
-//            }
-//
-//            if ((Objects.equals(currentNode.getData(), data)) || currentNode.getData().equals(data)) {
-//                assert !Objects.equals(previousNode, null);
-//                previousNode.setNext(currentNode.getNext());
-//                count--;
-//
-//                return true;
-//            }
-//        }
-//
-//        return false;
-//    }
-
     public boolean removeByData(E data) {
         if (count == 0) {
-            throw new NoSuchElementException("Список пустой");
+            return false;
         }
 
         if (Objects.equals(head.getData(), data)) {
@@ -170,6 +146,10 @@ public class SinglyLinkedList<E> {
 
     public void revert() {
         if (count == 0) {
+            return;
+        }
+
+        if (count == 1) {
             return;
         }
 
@@ -207,7 +187,7 @@ public class SinglyLinkedList<E> {
 
     private void checkIndex(int index) {
         if (index < 0 || index >= count) {
-            throw new IndexOutOfBoundsException("Индекс не может быть отрицательным или равным размеру списка. " +
+            throw new IndexOutOfBoundsException("Индекс не может быть отрицательным, больше или равным размеру списка. " +
                     "Допустимые границы от 0 до " + (count - 1) + ". Передаваемый индекс = " + index);
         }
     }

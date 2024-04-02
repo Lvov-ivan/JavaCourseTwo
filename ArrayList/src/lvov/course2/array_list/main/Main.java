@@ -1,6 +1,6 @@
-package lvov.course2.arrayList.main;
+package lvov.course2.array_list.main;
 
-import lvov.course2.arrayList.ArrayList;
+import lvov.course2.array_list.ArrayList;
 
 public class Main {
     public static void main(String[] args) {

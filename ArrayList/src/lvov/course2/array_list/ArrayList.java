@@ -138,7 +138,7 @@ public class ArrayList<E> implements List<E> {
             provideCapacity(collection.size());
         }
 
-        System.arraycopy(items, index, items, index + collection.size(), index - 1);
+        System.arraycopy(items, index, items, index + collection.size(), size - index);
         size = size + collection.size();
 
         int insertionIndex = index;

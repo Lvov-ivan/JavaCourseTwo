@@ -145,11 +145,7 @@ public class SinglyLinkedList<E> {
     }
 
     public void revert() {
-        if (count == 0) {
-            return;
-        }
-
-        if (count == 1) {
+        if (count <= 1) {
             return;
         }
 

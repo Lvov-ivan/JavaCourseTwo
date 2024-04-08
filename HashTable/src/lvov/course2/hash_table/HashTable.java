@@ -12,6 +12,10 @@ public class HashTable<E> implements Collection<E> {
     }
 
     public HashTable(int size) {
+        if (size <= 0) {
+            throw new IllegalArgumentException("Размер списка не может быть меньше или равен 0");
+        }
+
         items = new ArrayList[size];
     }
 
@@ -31,6 +35,10 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean contains(Object item) {
+        if (item == null) {
+            throw new NullPointerException("Переданный объект = null");
+        }
+
         int index = getIndex(item);
 
         if (items[index] != null) {
@@ -68,6 +76,10 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean add(E item) {
+        if (item == null) {
+            throw new NullPointerException("Переданный объект = null");
+        }
+
         int index = getIndex(item);
 
         if (items[index] == null) {
@@ -106,6 +118,10 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean containsAll(Collection<?> collection) {
+        if (collection == null) {
+            throw new NullPointerException("Переданная коллекция = null");
+        }
+
         for (Object item : collection) {
             int index = getIndex(item);
 
@@ -119,7 +135,11 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean addAll(Collection<? extends E> collection) {
-        if (collection == null || collection.isEmpty()) {
+        if (collection == null) {
+            throw new NullPointerException("Переданная коллекция = null");
+        }
+
+        if (collection.isEmpty()) {
             return false;
         }
 
@@ -134,6 +154,14 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean removeAll(Collection<?> collection) {
+        if (collection == null) {
+            throw new NullPointerException("Переданная коллекция = null");
+        }
+
+        if (collection.isEmpty() || size == 0) {
+            return false;
+        }
+
         boolean modified = false;
 
         for (Object collectionItem : collection) {
@@ -151,6 +179,14 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean retainAll(Collection<?> collection) {
+        if (collection == null) {
+            throw new NullPointerException("Переданная коллекция = null");
+        }
+
+        if (collection.isEmpty() || size == 0) {
+            return false;
+        }
+
         boolean modified = false;
 
         for (Iterator<E> i = iterator(); i.hasNext(); ) {

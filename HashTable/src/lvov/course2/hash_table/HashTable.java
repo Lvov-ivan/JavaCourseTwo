@@ -5,7 +5,7 @@ import java.util.*;
 public class HashTable<E> implements Collection<E> {
     private final ArrayList[] items;
     private int size;
-    private int modCount = 1;
+    private int modCount;
 
     public HashTable() {
         items = new ArrayList[100];
@@ -65,6 +65,7 @@ public class HashTable<E> implements Collection<E> {
             return (T[]) Arrays.copyOf(items, size, array.getClass());
         }
 
+        //noinspection SuspiciousSystemArraycopy
         System.arraycopy(items, 0, array, 0, size);
 
         if (array.length > size) {

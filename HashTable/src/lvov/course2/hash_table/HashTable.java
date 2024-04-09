@@ -208,6 +208,10 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public String toString() {
+        if (size == 0) {
+            return "[]";
+        }
+
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append('[');
@@ -220,11 +224,9 @@ public class HashTable<E> implements Collection<E> {
             }
         }
 
-        if (size > 0) {
-            stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
-        }
-
-        stringBuilder.append(']');
+        stringBuilder
+                .delete(stringBuilder.length() - 2, stringBuilder.length())
+                .append(']');
 
         return stringBuilder.toString();
     }

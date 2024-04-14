@@ -4,19 +4,20 @@ import java.util.*;
 import java.util.List;
 
 public class ArrayList<E> implements List<E> {
-    private int modCount = 0;
+    private int modCount;
     private int size;
     private E[] items;
 
     public ArrayList() {
-        int defaultCapacity = 16;
+        final int defaultCapacity = 16;
         //noinspection unchecked
         items = (E[]) new Object[defaultCapacity];
     }
 
     public ArrayList(int capacity) {
-        if (capacity <= 0) {
-            throw new IllegalArgumentException("Размер списка не может быть меньше или равен 0");
+        if (capacity < 0) {
+            throw new IllegalArgumentException("Вместимость списка не может быть меньше 0. Переданная вместимость = "
+                    + capacity);
         }
 
         //noinspection unchecked
@@ -24,15 +25,23 @@ public class ArrayList<E> implements List<E> {
     }
 
     private void increaseCapacity() {
+        if (items.length == 0) {
+            items = Arrays.copyOf(items, 2);
+        }
+
         items = Arrays.copyOf(items, items.length * 2);
     }
 
-    private void provideCapacity(int collectionSize) {
-        items = Arrays.copyOf(items, size + collectionSize);
+    public void grow(int requiredCapacity) {
+        if (size < requiredCapacity) {
+            items = Arrays.copyOf(items, requiredCapacity);
+        }
     }
 
     public void trimToSize() {
-        items = Arrays.copyOf(items, size);
+        if (size < items.length) {
+            items = Arrays.copyOf(items, size);
+        }
     }
 
     @Override
@@ -67,6 +76,7 @@ public class ArrayList<E> implements List<E> {
             return (T[]) Arrays.copyOf(items, size, array.getClass());
         }
 
+        //noinspection SuspiciousSystemArraycopy
         System.arraycopy(items, 0, array, 0, size);
 
         if (array.length > size) {
@@ -109,17 +119,7 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public boolean addAll(Collection<? extends E> collection) {
-        if (collection == null) {
-            throw new NullPointerException("Переданная коллекция = null");
-        }
-
-        if (collection.isEmpty()) {
-            return false;
-        }
-
-        addAll(size, collection);
-
-        return true;
+        return addAll(size, collection);
     }
 
     @Override
@@ -135,17 +135,17 @@ public class ArrayList<E> implements List<E> {
         }
 
         if (size + collection.size() >= items.length) {
-            provideCapacity(collection.size());
+            grow(collection.size() + size);
         }
 
         System.arraycopy(items, index, items, index + collection.size(), size - index);
         size = size + collection.size();
 
-        int insertionIndex = index;
+        int i = index;
 
         for (E item : collection) {
-            items[insertionIndex] = item;
-            insertionIndex++;
+            items[i] = item;
+            i++;
         }
 
         modCount++;
@@ -161,10 +161,9 @@ public class ArrayList<E> implements List<E> {
 
         boolean isModified = false;
 
-        for (int i = 0; i < items.length; i++) {
+        for (int i = size - 1; i >= 0; i--) {
             if (collection.contains(items[i])) {
                 remove(i);
-                i--;
                 isModified = true;
             }
         }
@@ -188,8 +187,11 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public void clear() {
-        Arrays.fill(items, null);
-        size = 0;
+        if (size > 0) {
+            Arrays.fill(items, 0, size, null);
+            size = 0;
+            modCount++;
+        }
     }
 
     @Override
@@ -203,10 +205,10 @@ public class ArrayList<E> implements List<E> {
     public E set(int index, E item) {
         checkIndex(index);
 
-        E deletedItem = items[index];
+        E oldItem = items[index];
         items[index] = item;
 
-        return deletedItem;
+        return oldItem;
     }
 
     @Override
@@ -227,13 +229,13 @@ public class ArrayList<E> implements List<E> {
     public E remove(int index) {
         checkIndex(index);
 
-        E deletedItem = items[index];
+        E removedItem = items[index];
         System.arraycopy(items, index + 1, items, index, size - 1 - index);
         items[size - 1] = null;
         size--;
         modCount++;
 
-        return deletedItem;
+        return removedItem;
     }
 
     @Override
@@ -300,20 +302,24 @@ public class ArrayList<E> implements List<E> {
 
     private void checkIndex(int index) {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Переданный индекс не может быть отрицательным, равным или больше размера " +
-                    "списка. Переданный индекс = " + index + ". Допустимые границы от 0 до " + (size - 1));
+            throw new IndexOutOfBoundsException("Индекс вышел за границы допустимого диапазона. Допустимые границы" +
+                    " от 0 до " + (size - 1) + ". Переданный индекс = " + index);
         }
     }
 
     private void checkIndexForAdding(int index) {
         if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Переданный индекс не может быть отрицательным или больше размера " +
-                    "списка. Переданный индекс = " + index + " Размер списка = " + size);
+            throw new IndexOutOfBoundsException("Индекс вышел за границы допустимого диапазона. Допустимые границы" +
+                    " от 0 до " + size + ". Переданный индекс = " + index);
         }
     }
 
     @Override
     public String toString() {
+        if (size == 0) {
+            return "[]";
+        }
+
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append('[');
@@ -324,11 +330,9 @@ public class ArrayList<E> implements List<E> {
                     .append(", ");
         }
 
-        if (size > 0) {
-            stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
-        }
-
-        stringBuilder.append(']');
+        stringBuilder
+                .delete(stringBuilder.length() - 2, stringBuilder.length())
+                .append(']');
 
         return stringBuilder.toString();
     }

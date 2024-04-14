@@ -14,8 +14,8 @@ public class Main {
         Matrix matrix1 = new Matrix(vector1);
         Matrix matrix2 = new Matrix(matrix1);
 
-        System.out.printf("%nКоличество столбцов %s%n%n", matrix1.getColumnCount());
-        System.out.printf("Количество строк %s%n%n", matrix1.getRowCount());
+        System.out.printf("%nКоличество столбцов %s%n%n", matrix1.getColumnsCount());
+        System.out.printf("Количество строк %s%n%n", matrix1.getRowsCount());
 
         System.out.printf("Строка матрицы до установки%n%s%n", matrix1.getRow(1));
         matrix1.setRow(1, new Vector(new double[]{31, 6, -15}));

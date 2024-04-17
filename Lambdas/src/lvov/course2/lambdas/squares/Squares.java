@@ -7,14 +7,14 @@ public class Squares {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Введите число:");
-        double number = scanner.nextInt();
-
         System.out.println("Введите количество корней:");
         int numbersCount = scanner.nextInt();
 
-        var squares = Stream.iterate(number, Math::sqrt).limit(numbersCount + 1).skip(1).toList();
-        System.out.println("Результат вычислений: ");
-        System.out.println(squares);
+        Stream<Double> squares = Stream.iterate(0, x -> x + 1)
+                .map(Math::sqrt)
+                .limit(numbersCount);
+
+        System.out.println("Результат вычислений:");
+        squares.forEach(System.out::println);
     }
 }

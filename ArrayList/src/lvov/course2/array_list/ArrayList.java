@@ -9,9 +9,9 @@ public class ArrayList<E> implements List<E> {
     private E[] items;
 
     public ArrayList() {
-        final int defaultCapacity = 16;
+        final int DEFAULT_CAPACITY = 16;
         //noinspection unchecked
-        items = (E[]) new Object[defaultCapacity];
+        items = (E[]) new Object[DEFAULT_CAPACITY];
     }
 
     public ArrayList(int capacity) {

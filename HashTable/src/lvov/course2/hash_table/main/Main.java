@@ -6,46 +6,46 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        HashTable<String> list1 = new HashTable<>();
-        list1.add("Саша");
-        list1.add("Вася");
-        list1.add("Катя");
-        list1.add("Вася");
-        list1.add("Саша");
-        list1.add("Петя");
-        list1.add("Маша");
+        HashTable<String> hashTable1 = new HashTable<>();
+        hashTable1.add("Саша");
+        hashTable1.add("Вася");
+        hashTable1.add("Катя");
+        hashTable1.add("Вася");
+        hashTable1.add("Саша");
+        hashTable1.add("Петя");
+        hashTable1.add("Маша");
 
-        System.out.println("Список1 до удаления: " + list1);
-        list1.remove("Вася");
-        System.out.println("Список1 после удаления: " + list1);
+        System.out.println("Хэш-таблица1 до удаления: " + hashTable1);
+        hashTable1.remove("Вася");
+        System.out.println("Хэш-таблица1 после удаления: " + hashTable1);
 
-        if (list1.contains("Петя")) {
-            System.out.println("Список содержит элемент: \"Петя\"");
+        if (hashTable1.contains("Петя")) {
+            System.out.println("Хэш-таблица содержит элемент: \"Петя\"");
         } else {
-            System.out.println("Список не содержит элемент: \"Петя\"");
+            System.out.println("Хэш-таблица не содержит элемент: \"Петя\"");
         }
 
-        HashTable<String> list2 = new HashTable<>();
-        list2.add("Вася");
-        list2.add("Катя");
+        HashTable<String> hashTable2 = new HashTable<>();
+        hashTable2.add("Вася");
+        hashTable2.add("Катя");
 
-        if (list1.containsAll(list2)) {
-            System.out.println("Список1 содержит все элементы списка2");
+        if (hashTable1.containsAll(hashTable2)) {
+            System.out.println("Хэш-таблица1 содержит все элементы хэш-таблицы2");
         } else {
-            System.out.println("Список1 не содержит все элементы списка2");
+            System.out.println("Хэш-таблица1 не содержит все элементы хэш-таблицы2");
         }
 
-        list1.addAll(list2);
-        System.out.println("Список1 после добавления в него списка2: " + list1);
+        hashTable1.addAll(hashTable2);
+        System.out.println("Хэш-таблица1 после добавления в неё хэш-таблицы2: " + hashTable1);
 
-        list1.removeAll(list2);
-        System.out.println("Список1 после удаления из него всех элементов списка2: " + list1);
+        hashTable1.removeAll(hashTable2);
+        System.out.println("Хэш-таблица1 после удаления из неё всех элементов хэш-таблицы2: " + hashTable1);
 
         ArrayList<String> list3 = new ArrayList<>();
         list3.add("Петя");
         list3.add("Саша");
 
-        list1.retainAll(list3);
-        System.out.println("Список1 в котором остались только элементы списка3" + list1);
+        hashTable1.retainAll(list3);
+        System.out.println("Хэш-таблица1 в которой остались только элементы списка3" + hashTable1);
     }
 }

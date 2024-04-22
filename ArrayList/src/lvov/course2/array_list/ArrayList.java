@@ -7,9 +7,10 @@ public class ArrayList<E> implements List<E> {
     private int modCount;
     private int size;
     private E[] items;
+    final private int DEFAULT_CAPACITY = 16;
 
     public ArrayList() {
-        final int DEFAULT_CAPACITY = 16;
+
         //noinspection unchecked
         items = (E[]) new Object[DEFAULT_CAPACITY];
     }
@@ -26,15 +27,17 @@ public class ArrayList<E> implements List<E> {
 
     private void increaseCapacity() {
         if (items.length == 0) {
-            items = Arrays.copyOf(items, 2);
+            //noinspection unchecked
+            items = (E[]) new Object[DEFAULT_CAPACITY];
+        } else {
+            items = Arrays.copyOf(items, items.length * 2);
         }
-
-        items = Arrays.copyOf(items, items.length * 2);
     }
 
-    public void grow(int requiredCapacity) {
-        if (size < requiredCapacity) {
-            items = Arrays.copyOf(items, requiredCapacity);
+    public void provideCapacity(int requiredCapacity) {
+        if (size + requiredCapacity > items.length) {
+            int newLength = (requiredCapacity + size) * 2;
+            items = Arrays.copyOf(items, newLength);
         }
     }
 
@@ -134,12 +137,10 @@ public class ArrayList<E> implements List<E> {
             return false;
         }
 
-        if (size + collection.size() >= items.length) {
-            grow(collection.size() + size);
-        }
+        provideCapacity(collection.size());
 
         System.arraycopy(items, index, items, index + collection.size(), size - index);
-        size = size + collection.size();
+        size += collection.size();
 
         int i = index;
 
@@ -282,10 +283,12 @@ public class ArrayList<E> implements List<E> {
         private int index = -1;
         private final int initialModCount = modCount;
 
+        @Override
         public boolean hasNext() {
             return index + 1 < size;
         }
 
+        @Override
         public E next() {
             if (!hasNext()) {
                 throw new NoSuchElementException("В коллекции больше нет элементов");

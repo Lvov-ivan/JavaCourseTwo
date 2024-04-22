@@ -7,7 +7,7 @@ public class ArrayList<E> implements List<E> {
     private int modCount;
     private int size;
     private E[] items;
-    final private int DEFAULT_CAPACITY = 16;
+    private final int DEFAULT_CAPACITY = 16;
 
     public ArrayList() {
 

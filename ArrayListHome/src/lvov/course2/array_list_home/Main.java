@@ -4,12 +4,12 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class Main {
-    public static <T> ArrayList<T> getListWithoutDuplicates(ArrayList<T> listWithDuplicates) {
-        ArrayList<T> listWithoutDuplicates = new ArrayList<>(listWithDuplicates.size());
+    public static <T> ArrayList<T> getListWithoutDuplicates(ArrayList<T> list) {
+        ArrayList<T> listWithoutDuplicates = new ArrayList<>(list.size());
 
-        for (T listWithRepetition : listWithDuplicates) {
-            if (!listWithoutDuplicates.contains(listWithRepetition)) {
-                listWithoutDuplicates.add(listWithRepetition);
+        for (T listItem : list) {
+            if (!listWithoutDuplicates.contains(listItem)) {
+                listWithoutDuplicates.add(listItem);
             }
         }
 
@@ -25,48 +25,43 @@ public class Main {
         }
     }
 
-    public static ArrayList<Integer> parseListIntegers(ArrayList<String> stringsList) {
-        ArrayList<Integer> numbers = new ArrayList<>();
+    public static ArrayList<Integer> parseIntegersList(ArrayList<String> stringsList) {
+        ArrayList<Integer> numbersList = new ArrayList<>();
 
         for (String string : stringsList) {
             String[] stringsArray = string.replaceAll(" ", "").split(",");
 
-            for (String number : stringsArray) {
-                numbers.add(Integer.parseInt(number));
+            for (String arrayItem : stringsArray) {
+                numbersList.add(Integer.parseInt(arrayItem));
             }
         }
 
-        return numbers;
+        return numbersList;
     }
 
-    public static ArrayList<String> getListStringsFromFile(String filePath) throws IOException {
-        ArrayList<String> stringsList = new ArrayList<>();
+    public static ArrayList<String> getFileLines(String filePath) throws IOException {
+        ArrayList<String> lines = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))
-        ) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
 
             while ((line = reader.readLine()) != null) {
-                stringsList.add(line);
+                lines.add(line);
             }
-
-        } catch (IOException e) {
-            throw new IOException("Файл не найден!");
         }
 
-        return stringsList;
+        return lines;
     }
 
     public static void main(String[] args) throws IOException {
-        ArrayList<String> stringsList = getListStringsFromFile("ArrayListHome\\src\\lvov\\course2\\array_list_home" +
-                "\\Numbers.txt");
+        ArrayList<String> fileLines = getFileLines("ArrayListHome/src/lvov/course2/array_list_home/Numbers.txt");
 
-        ArrayList<Integer> numbersList1 = parseListIntegers(stringsList);
-        System.out.println("Изначальный список: " + numbersList1);
-        removeEvenNumbers(numbersList1);
-        System.out.println("Список без чётных чисел: " + numbersList1);
+        ArrayList<Integer> numbersList = parseIntegersList(fileLines);
+        System.out.println("Изначальный список: " + numbersList);
+        removeEvenNumbers(numbersList);
+        System.out.println("Список без чётных чисел: " + numbersList);
 
-        ArrayList<Integer> listWithoutDuplicates = getListWithoutDuplicates(parseListIntegers(stringsList));
+        ArrayList<Integer> listWithoutDuplicates = getListWithoutDuplicates(parseIntegersList(fileLines));
         System.out.println("Список без повторений: " + listWithoutDuplicates);
     }
 }

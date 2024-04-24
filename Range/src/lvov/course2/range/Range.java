@@ -25,7 +25,7 @@ public class Range {
         this.to = to;
     }
 
-   @Override
+    @Override
     public String toString() {
         return "(" + from + "; " + to + ")";
     }
@@ -38,60 +38,43 @@ public class Range {
         return number >= from && number <= to;
     }
 
-    public Range getSum(Range range) {
-        if (range.from < to) {
-            return new Range(range.from, to);
+    public Range getIntersection(Range range) {
+        if (range.from >= to || range.to <= from) {
+            return null;
         }
 
-        if (from < range.from && range.to < to) {
-            return new Range(range.from, range.to);
-        }
-
-        if (from == range.from && to < range.to) {
-            return new Range(range.from, to);
-        }
-
-        return null;
+        return new Range(Math.max(range.from, from), Math.min(range.to, to));
     }
 
     public Range[] getUnion(Range range) {
-        if (range.from <= to) {
-            return new Range[]{new Range(this.from, range.to)};
+        if (range.from > to || range.to < from) {
+            if (from < range.from) {
+                return new Range[]{new Range(from, to), new Range(range.from, range.to)};
+            }
+
+            return new Range[]{new Range(range.from, range.to), new Range(from, to)};
         }
 
-        return new Range[]{new Range(from, to), new Range(range.from, range.to)};
+        return new Range[]{new Range(Math.min(range.from, from), Math.max(range.to, to))};
     }
 
     public Range[] getDifference(Range range) {
-        if (range.from < from && range.to > to) {
+        if (from >= range.from && to <= range.to) {
             return new Range[0];
         }
 
-        if (range.from < to) {
-            return new Range[]{new Range(from, range.from)};
+        if (to < range.from || from > range.to) {
+            return new Range[]{new Range(from, to)};
         }
 
-        return new Range[]{new Range(from, to), new Range(range.from, range.to)};
-    }
-
-    public static String printRanges(Range[] ranges) {
-        StringBuilder stringBuilder = new StringBuilder();
-        if (ranges.length == 0) {
-            return "[]";
+        if (from < range.from && to > range.to) {
+            return new Range[]{new Range(from, range.from), new Range(range.to, to)};
         }
 
-        stringBuilder.append('[');
-
-        for (Range range : ranges) {
-            stringBuilder
-                    .append(range)
-                    .append(", ");
+        if (range.from <= from) {
+            return new Range[]{new Range(range.to, to)};
         }
 
-        stringBuilder
-                .delete(stringBuilder.length() - 2, stringBuilder.length())
-                .append(']');
-
-        return stringBuilder.toString();
+        return new Range[]{new Range(from, range.from)};
     }
 }

@@ -2,38 +2,33 @@ package lvov.course2.range.main;
 
 import lvov.course2.range.Range;
 
+import java.util.Arrays;
+
 public class Main {
     public static void main(String[] args) {
         Range range1 = new Range(1.1, 5.8);
-        Range range2 = new Range(5.9, 7);
+        Range range2 = new Range(5.5, 7);
 
         double number = 2.2;
-
         System.out.println("Длина диапазона = " + range1.getLength());
+
         if (range1.isInside(number)) {
-            System.out.println("Число принадлежит диапазону");
+            System.out.println("Число принадлежит диапазону " + range1);
         } else {
-            System.out.println("Число не принадлежит диапазону");
+            System.out.println("Число не принадлежит диапазону " + range1);
         }
 
-        Range rangeIntersection = range1.getSum(range2);
-        if (rangeIntersection == null) {
-            System.out.println("Нет пересечений данных интервалов");
+        Range intersection = range1.getIntersection(range2);
+        if (intersection == null) {
+            System.out.println("Диапазоны " + range1 + " и " + range2 + " не пересекаются.");
         } else {
-            System.out.println("Пересечения интервала " + range1 + "и интервала " + range2 + " составляет, интервал = " + rangeIntersection);
+            System.out.println("Пересечение диапазона " + range1 + " и " + range2 + " составляет, диапазон = " + intersection);
         }
 
-        Range[] rangeUnion = range1.getUnion(range2);
-        if (rangeUnion.length == 1) {
-            System.out.println("Объединённый интервал = " + rangeUnion[0]);
-        } else {
-            System.out.println("Объединённый интервал состоит из 2х интервалов = " + Range.printRanges(rangeUnion));
-        }
+        Range[] union = range1.getUnion(range2);
+        System.out.println("Объединение диапазонов " + range1 + " и " + range2 + " = " + Arrays.toString(union));
 
         Range[] difference = range1.getDifference(range2);
-        if (difference.length == 0) {
-            System.out.println("Разность интервалов = 0");
-        } else
-            System.out.println("Разность интервалов = " + Range.printRanges(difference));
+        System.out.println("Разность диапазонов " + range1 + " и " + range2 + " = " + Arrays.toString(difference));
     }
 }

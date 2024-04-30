@@ -4,13 +4,13 @@ import java.util.*;
 import java.util.List;
 
 public class ArrayList<E> implements List<E> {
+    private static final int DEFAULT_CAPACITY = 16;
+
     private int modCount;
     private int size;
     private E[] items;
-    private final int DEFAULT_CAPACITY = 16;
 
     public ArrayList() {
-
         //noinspection unchecked
         items = (E[]) new Object[DEFAULT_CAPACITY];
     }
@@ -34,7 +34,7 @@ public class ArrayList<E> implements List<E> {
         }
     }
 
-    public void provideCapacity(int requiredCapacity) {
+    public void ensureCapacity(int requiredCapacity) {
         if (size + requiredCapacity > items.length) {
             int newLength = (requiredCapacity + size) * 2;
             items = Arrays.copyOf(items, newLength);
@@ -137,7 +137,7 @@ public class ArrayList<E> implements List<E> {
             return false;
         }
 
-        provideCapacity(collection.size());
+        ensureCapacity(collection.size());
 
         System.arraycopy(items, index, items, index + collection.size(), size - index);
         size += collection.size();

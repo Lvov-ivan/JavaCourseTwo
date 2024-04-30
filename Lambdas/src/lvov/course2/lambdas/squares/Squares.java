@@ -10,7 +10,7 @@ public class Squares {
         System.out.println("Введите количество корней:");
         int numbersCount = scanner.nextInt();
 
-        Stream<Double> squares = Stream.iterate(0, x -> x + 1)
+        DoubleStream squares = DoubleStream.iterate(0, x -> x + 1)
                 .map(Math::sqrt)
                 .limit(numbersCount);
 

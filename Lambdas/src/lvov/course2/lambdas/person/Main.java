@@ -3,6 +3,7 @@ package lvov.course2.lambdas.person;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -28,22 +29,22 @@ public class Main {
         List<Person> personsUnderEighteen = persons.stream()
                 .filter(p -> p.getAge() < 18)
                 .toList();
-        double personsUnderEighteenAverageAge = personsUnderEighteen.stream()
-                .collect(Collectors.averagingInt(Person::getAge));
+        OptionalDouble personsUnderEighteenAverageAge = OptionalDouble.of(personsUnderEighteen.stream()
+                .collect(Collectors.averagingInt(Person::getAge)));
 
-        if (!personsUnderEighteen.isEmpty()) {
+        if (personsUnderEighteenAverageAge.getAsDouble() >= 0) {
             System.out.println("Список людей младше 18 лет: " + personsUnderEighteen);
-            System.out.println("Их средний возраст: " + personsUnderEighteenAverageAge);
+            System.out.println("Их средний возраст: " + personsUnderEighteenAverageAge.getAsDouble());
         } else {
             System.out.println("Нет людей младше 18 лет.");
         }
 
         System.out.println();
 
-        Map<String, Double> mapObjectsGroupedByName = persons.stream()
+        Map<String, Double> valuesGroupedByNameMap = persons.stream()
                 .collect(Collectors.groupingBy(Person::getName, Collectors.averagingInt(Person::getAge)));
         System.out.println("Люди сгруппированные в Map, в котором ключи – имена, а значения – средний возраст:");
-        System.out.println(mapObjectsGroupedByName);
+        System.out.println(valuesGroupedByNameMap);
         System.out.println();
 
         System.out.println("Список людей возрастом от 20 до 45 и отсортированный по возрасту от большего к меньшему:");

@@ -34,10 +34,9 @@ public class ArrayList<E> implements List<E> {
         }
     }
 
-    public void ensureCapacity(int requiredCapacity) {
-        if (size + requiredCapacity > items.length) {
-            int newLength = (requiredCapacity + size) * 2;
-            items = Arrays.copyOf(items, newLength);
+    public void ensureCapacity(int capacity) {
+        if (capacity > items.length) {
+            items = Arrays.copyOf(items, capacity);
         }
     }
 
@@ -137,7 +136,7 @@ public class ArrayList<E> implements List<E> {
             return false;
         }
 
-        ensureCapacity(collection.size());
+        ensureCapacity(size + collection.size());
 
         System.arraycopy(items, index, items, index + collection.size(), size - index);
         size += collection.size();

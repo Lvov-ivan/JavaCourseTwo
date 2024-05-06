@@ -3,25 +3,25 @@ package lvov.course2.hash_table;
 import java.util.*;
 
 public class HashTable<E> implements Collection<E> {
-    private final static int DEFAULT_CAPACITY = 100;
+    private static final int DEFAULT_CAPACITY = 100;
 
-    private final ArrayList<E>[] arrayLists;
+    private final ArrayList<E>[] lists;
     private int size;
     private int modCount;
 
     public HashTable() {
         //noinspection unchecked
-        arrayLists = (ArrayList<E>[]) new ArrayList[DEFAULT_CAPACITY];
+        lists = (ArrayList<E>[]) new ArrayList[DEFAULT_CAPACITY];
     }
 
     public HashTable(int capacity) {
         if (capacity <= 0) {
-            throw new IllegalArgumentException("Вместимость хэш-таблицы не может быть меньше или равен 0. " +
+            throw new IllegalArgumentException("Вместимость хэш-таблицы не может быть меньше или равна 0. " +
                     "Переданная вместимость = " + capacity);
         }
 
         //noinspection unchecked
-        arrayLists = (ArrayList<E>[]) new ArrayList[capacity];
+        lists = (ArrayList<E>[]) new ArrayList[capacity];
     }
 
     private int getIndex(Object object) {
@@ -29,7 +29,7 @@ public class HashTable<E> implements Collection<E> {
             return 0;
         }
 
-        return Math.abs(object.hashCode() % arrayLists.length);
+        return Math.abs(object.hashCode() % lists.length);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class HashTable<E> implements Collection<E> {
     public boolean contains(Object object) {
         int index = getIndex(object);
 
-        return arrayLists[index] != null && arrayLists[index].contains(object);
+        return lists[index] != null && lists[index].contains(object);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class HashTable<E> implements Collection<E> {
         Object[] array = new Object[size];
         int i = 0;
 
-        for (ArrayList<E> list : arrayLists) {
+        for (ArrayList<E> list : lists) {
             if (list != null) {
                 for (Object object : list) {
                     array[i] = object;
@@ -92,11 +92,11 @@ public class HashTable<E> implements Collection<E> {
     public boolean add(E item) {
         int index = getIndex(item);
 
-        if (arrayLists[index] == null) {
-            arrayLists[index] = new ArrayList<>();
+        if (lists[index] == null) {
+            lists[index] = new ArrayList<>();
         }
 
-        arrayLists[index].add(item);
+        lists[index].add(item);
         size++;
         modCount++;
 
@@ -107,7 +107,7 @@ public class HashTable<E> implements Collection<E> {
     public boolean remove(Object object) {
         int index = getIndex(object);
 
-        if (arrayLists[index] != null && arrayLists[index].remove(object)) {
+        if (lists[index] != null && lists[index].remove(object)) {
             size--;
             modCount++;
             return true;
@@ -160,17 +160,18 @@ public class HashTable<E> implements Collection<E> {
 
         boolean isModified = false;
 
-        for (ArrayList<E> list : arrayLists) {
+        for (ArrayList<E> list : lists) {
             if (list != null) {
-                int listSize = list.size();
+                int initialListSize = list.size();
 
                 if (list.removeAll(collection)) {
                     isModified = true;
-                    modCount++;
-                    size = size - listSize;
+                    size -= initialListSize - list.size();
                 }
             }
         }
+
+        modCount++;
 
         return isModified;
     }
@@ -181,19 +182,24 @@ public class HashTable<E> implements Collection<E> {
             throw new NullPointerException("Переданная коллекция = null");
         }
 
+        if (size == 0) {
+            return false;
+        }
+
         boolean isModified = false;
 
-        for (ArrayList<E> list : arrayLists) {
+        for (ArrayList<E> list : lists) {
             if (list != null) {
-                int listSize = list.size();
+                int initialListSize = list.size();
 
                 if (list.retainAll(collection)) {
                     isModified = true;
-                    modCount++;
-                    size = size - listSize;
+                    size -= initialListSize - list.size();
                 }
             }
         }
+
+        modCount++;
 
         return isModified;
     }
@@ -204,7 +210,7 @@ public class HashTable<E> implements Collection<E> {
             return;
         }
 
-        for (ArrayList<E> list : arrayLists) {
+        for (ArrayList<E> list : lists) {
             if (list != null) {
                 list.clear();
             }
@@ -224,7 +230,7 @@ public class HashTable<E> implements Collection<E> {
 
         stringBuilder.append('[');
 
-        for (ArrayList<E> list : arrayLists) {
+        for (ArrayList<E> list : lists) {
             if (list != null && !list.isEmpty()) {
                 stringBuilder
                         .append(list)
@@ -241,7 +247,7 @@ public class HashTable<E> implements Collection<E> {
 
     private class HashTableIterator implements Iterator<E> {
         private int passedItemsCount;
-        private int currentListIteratorIndex = -1;
+        private int listIndex = -1;
         private Iterator<E> listIterator;
         private final int initialModCount = modCount;
 
@@ -261,13 +267,13 @@ public class HashTable<E> implements Collection<E> {
             }
 
             if (listIterator == null || !listIterator.hasNext()) {
-                currentListIteratorIndex++;
+                listIndex++;
 
-                while (currentListIteratorIndex < arrayLists.length && arrayLists[currentListIteratorIndex] == null) {
-                    currentListIteratorIndex++;
+                while (listIndex < lists.length && lists[listIndex] == null || lists[listIndex].isEmpty()) {
+                    listIndex++;
                 }
 
-                listIterator = arrayLists[currentListIteratorIndex].iterator();
+                listIterator = lists[listIndex].iterator();
             }
 
             passedItemsCount++;

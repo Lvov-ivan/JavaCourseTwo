@@ -29,10 +29,12 @@ public class Main {
         List<Person> personsUnderEighteen = persons.stream()
                 .filter(p -> p.getAge() < 18)
                 .toList();
-        OptionalDouble personsUnderEighteenAverageAge = OptionalDouble.of(personsUnderEighteen.stream()
-                .collect(Collectors.averagingInt(Person::getAge)));
 
-        if (personsUnderEighteenAverageAge.getAsDouble() >= 0) {
+        OptionalDouble personsUnderEighteenAverageAge = personsUnderEighteen.stream()
+                .mapToDouble(Person::getAge)
+                .average();
+
+        if (personsUnderEighteenAverageAge.isPresent()) {
             System.out.println("Список людей младше 18 лет: " + personsUnderEighteen);
             System.out.println("Их средний возраст: " + personsUnderEighteenAverageAge.getAsDouble());
         } else {
@@ -41,10 +43,10 @@ public class Main {
 
         System.out.println();
 
-        Map<String, Double> valuesGroupedByNameMap = persons.stream()
+        Map<String, Double> averageAgeGroupedByNameMap = persons.stream()
                 .collect(Collectors.groupingBy(Person::getName, Collectors.averagingInt(Person::getAge)));
         System.out.println("Люди сгруппированные в Map, в котором ключи – имена, а значения – средний возраст:");
-        System.out.println(valuesGroupedByNameMap);
+        System.out.println(averageAgeGroupedByNameMap);
         System.out.println();
 
         System.out.println("Список людей возрастом от 20 до 45 и отсортированный по возрасту от большего к меньшему:");

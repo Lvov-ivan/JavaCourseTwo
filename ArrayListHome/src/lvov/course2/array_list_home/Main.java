@@ -17,7 +17,7 @@ public class Main {
     }
 
     public static void removeEvenNumbers(ArrayList<Integer> numbers) {
-        for (int i = numbers.size() - 1; i > 0; i--) {
+        for (int i = numbers.size() - 1; i >= 0; i--) {
             if (numbers.get(i) % 2 == 0) {
                 numbers.remove(i);
             }
@@ -52,19 +52,24 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        ArrayList<String> fileLines = new ArrayList<>();
+
         try {
-            ArrayList<String> fileLines = getFileLines("ArrayListHome/src/lvov/course2/array_list_home/Numbers.txt");
-            System.out.println("Изначальный список:");
-            System.out.println(fileLines);
-
-            ArrayList<Integer> numbersList = convertToIntegersList(fileLines);
-            removeEvenNumbers(numbersList);
-            System.out.println("Список без чётных чисел: " + numbersList);
-
-            ArrayList<Integer> listWithoutDuplicates = getListWithoutDuplicates(convertToIntegersList(fileLines));
-            System.out.println("Список без повторений: " + listWithoutDuplicates);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            fileLines = getFileLines("ArrayListHome/src/lvov/course2/array_list_home/Numbers.txt");
+        } catch (FileNotFoundException e) {
+            System.out.println("Указанный файл не найден");
+        } catch (IOException e) {
+            System.out.println("Ошибка доступа к указанному файлу");
         }
+
+        System.out.println("Изначальный список:");
+        System.out.println(fileLines);
+
+        ArrayList<Integer> numbersList = convertToIntegersList(fileLines);
+        removeEvenNumbers(numbersList);
+        System.out.println("Список без чётных чисел: " + numbersList);
+
+        ArrayList<Integer> listWithoutDuplicates = getListWithoutDuplicates(convertToIntegersList(fileLines));
+        System.out.println("Список без повторений: " + listWithoutDuplicates);
     }
 }

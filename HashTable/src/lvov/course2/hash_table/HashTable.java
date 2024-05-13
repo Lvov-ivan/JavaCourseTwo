@@ -171,7 +171,9 @@ public class HashTable<E> implements Collection<E> {
             }
         }
 
-        modCount++;
+        if (isModified) {
+            modCount++;
+        }
 
         return isModified;
     }
@@ -199,7 +201,9 @@ public class HashTable<E> implements Collection<E> {
             }
         }
 
-        modCount++;
+        if (isModified) {
+            modCount++;
+        }
 
         return isModified;
     }
@@ -269,7 +273,7 @@ public class HashTable<E> implements Collection<E> {
             if (listIterator == null || !listIterator.hasNext()) {
                 listIndex++;
 
-                while (listIndex < lists.length && lists[listIndex] == null || lists[listIndex].isEmpty()) {
+                while (listIndex <= lists.length && (lists[listIndex] == null) || lists[listIndex].isEmpty()) {
                     listIndex++;
                 }
 

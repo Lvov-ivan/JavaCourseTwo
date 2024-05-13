@@ -31,7 +31,7 @@ public class Main {
                 .toList();
 
         OptionalDouble personsUnderEighteenAverageAge = personsUnderEighteen.stream()
-                .mapToDouble(Person::getAge)
+                .mapToInt(Person::getAge)
                 .average();
 
         if (personsUnderEighteenAverageAge.isPresent()) {

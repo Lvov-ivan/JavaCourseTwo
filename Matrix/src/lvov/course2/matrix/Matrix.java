@@ -44,20 +44,20 @@ public class Matrix {
             throw new IllegalArgumentException("Количество строк матрицы не может быть 0");
         }
 
-        int columnCount = 0;
+        int columnsCount = 0;
 
         for (double[] row : array) {
-            columnCount = Math.max(row.length, columnCount);
+            columnsCount = Math.max(row.length, columnsCount);
         }
 
-        if (columnCount == 0) {
+        if (columnsCount == 0) {
             throw new IllegalArgumentException("Количество столбцов матрицы не может быть 0");
         }
 
         rows = new Vector[array.length];
 
         for (int i = 0; i < array.length; i++) {
-            rows[i] = new Vector(columnCount, array[i]);
+            rows[i] = new Vector(columnsCount, array[i]);
         }
     }
 
@@ -70,16 +70,16 @@ public class Matrix {
             throw new IllegalArgumentException("Количество строк матрицы не может быть 0");
         }
 
-        int columnCount = 0;
+        int columnsCount = 0;
 
         for (Vector row : vectors) {
-            columnCount = Math.max(row.getSize(), columnCount);
+            columnsCount = Math.max(row.getSize(), columnsCount);
         }
 
         rows = new Vector[vectors.length];
 
         for (int i = 0; i < rows.length; i++) {
-            rows[i] = new Vector(columnCount);
+            rows[i] = new Vector(columnsCount);
             rows[i].add(vectors[i]);
         }
     }
@@ -103,7 +103,8 @@ public class Matrix {
 
         if (getColumnsCount() != row.getSize()) {
             throw new IllegalArgumentException("Размерность передаваемой строки не равна количеству столбцов матрицы." +
-                    " Количество столбцов матрицы " + getColumnsCount() + " Размерность передаваемой строки " + row.getSize());
+                    " Количество столбцов матрицы = " + getColumnsCount() +
+                    ". Размерность передаваемой строки = " + row.getSize());
         }
 
         for (int i = 0; i < row.getSize(); i++) {
@@ -128,7 +129,8 @@ public class Matrix {
 
         if (getRowsCount() != column.getSize()) {
             throw new IllegalArgumentException("Размерность передаваемого столбца не равна количеству строк матрицы. " +
-                    "Количество строк матрицы " + rows.length + " Размерность передаваемого столбца " + column.getSize());
+                    "Количество строк матрицы = " + rows.length +
+                    ". Размерность передаваемого столбца = " + column.getSize());
         }
 
         for (int i = 0; i < column.getSize(); i++) {
@@ -203,7 +205,7 @@ public class Matrix {
         }
 
         stringBuilder
-                .delete(stringBuilder.length() - 1, stringBuilder.length())
+                .delete(stringBuilder.length() - 2, stringBuilder.length())
                 .append('}');
 
         return stringBuilder.toString();
@@ -265,8 +267,7 @@ public class Matrix {
                     " Количество строк второй матрицы = " + matrix2.rows.length);
         }
 
-        Matrix resultMatrix = new Matrix(Math.max(matrix1.getRowsCount(), matrix2.getRowsCount()),
-                Math.max(matrix1.getColumnsCount(), matrix2.getColumnsCount()));
+        Matrix resultMatrix = new Matrix(matrix1.rows.length, matrix2.getColumnsCount());
 
         for (int i = 0; i < matrix1.rows.length; i++) {
             for (int j = 0; j < matrix1.getColumnsCount(); j++) {

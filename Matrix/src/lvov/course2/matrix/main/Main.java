@@ -17,13 +17,13 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Vector[] arrayVectors = {
+        Vector[] vectorsArray = {
                 new Vector(new double[]{-1, 2, -5}),
                 new Vector(new double[]{3, 4, 1}),
                 new Vector(new double[]{0, 1, 2})
         };
 
-        Matrix matrix1 = new Matrix(arrayVectors);
+        Matrix matrix1 = new Matrix(vectorsArray);
         Matrix matrix2 = new Matrix(matrix1);
 
         System.out.printf("%nКоличество столбцов %s%n%n", matrix1.getColumnsCount());
@@ -37,20 +37,20 @@ public class Main {
         System.out.printf("%nМатрица 2, скопированная до установки строки в матрице%n");
         print(matrix2);
 
-        Matrix matrix3 = new Matrix(arrayVectors);
+        Matrix matrix3 = new Matrix(vectorsArray);
         matrix3.transpose();
         System.out.printf("%nТранспонированная матрица%n");
         print(matrix3);
 
-        Matrix matrix4 = new Matrix(arrayVectors);
+        Matrix matrix4 = new Matrix(vectorsArray);
         matrix4.multiplyByScalar(11);
         System.out.printf("%nМатрица умноженная на скаляр%n");
         print(matrix4);
 
-        Matrix matrix5 = new Matrix(arrayVectors);
+        Matrix matrix5 = new Matrix(vectorsArray);
         System.out.printf("%nОпределитель матрицы %s%n", matrix5.getDeterminant());
 
-        Matrix matrix6 = new Matrix(arrayVectors);
+        Matrix matrix6 = new Matrix(vectorsArray);
         matrix5.add(matrix6);
         System.out.printf("%nСумма матриц%n");
         print(matrix5);
@@ -59,11 +59,11 @@ public class Main {
         System.out.printf("%nРазность матриц%n");
         print(matrix5);
 
-        Matrix matrix7 = new Matrix(arrayVectors);
+        Matrix matrix7 = new Matrix(vectorsArray);
         System.out.printf("%nМатрица умноженная на вектор%n%s%n", matrix7.multiplyByVector(new Vector(new double[]{2, 3, 4})));
 
-        Matrix matrix8 = new Matrix(arrayVectors);
-        Matrix matrix9 = new Matrix(arrayVectors);
+        Matrix matrix8 = new Matrix(vectorsArray);
+        Matrix matrix9 = new Matrix(vectorsArray);
 
         System.out.printf("%nСумма матриц%n");
         print(Matrix.getSum(matrix8, matrix9));

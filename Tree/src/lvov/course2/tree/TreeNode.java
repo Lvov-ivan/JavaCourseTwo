@@ -1,55 +1,35 @@
 package lvov.course2.tree;
 
-import java.util.ArrayList;
+class TreeNode<E> {
+    private TreeNode<E> left;
+    private TreeNode<E> right;
+    private E data;
 
-public class TreeNode<T extends Comparable<T>> {
-    private TreeNode<T> left;
-    private TreeNode<T> right;
-    private T data;
-
-    public TreeNode(T data) {
+    public TreeNode(E data) {
         this.data = data;
     }
 
-    public TreeNode<T> getLeft() {
+    public TreeNode<E> getLeft() {
         return left;
     }
 
-    public void setLeft(TreeNode<T> left) {
+    public void setLeft(TreeNode<E> left) {
         this.left = left;
     }
 
-    public TreeNode<T> getRight() {
+    public TreeNode<E> getRight() {
         return right;
     }
 
-    public void setRight(TreeNode<T> right) {
+    public void setRight(TreeNode<E> right) {
         this.right = right;
     }
 
-    public T getData() {
+    public E getData() {
         return data;
     }
 
-    public void setData(T data) {
+    public void setData(E data) {
         this.data = data;
-    }
-
-    public ArrayList<TreeNode<T>> getChildren() {
-        ArrayList<TreeNode<T>> children = new ArrayList<>();
-        if (left != null) {
-            children.add(left);
-        }
-
-        if (right != null) {
-            children.add(right);
-        }
-
-        return children;
-    }
-
-    @Override
-    public String toString() {
-        return data.toString();
     }
 }

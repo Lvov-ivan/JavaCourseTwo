@@ -1,11 +1,12 @@
 package lvov.course2.tree.main;
 
-import lvov.course2.tree.Tree;
-import lvov.course2.tree.TreeNode;
+import lvov.course2.tree.BinaryTree;
+
+import java.util.function.Consumer;
 
 public class Main {
     public static void main(String[] args) {
-        Tree<Integer> binaryTree = new Tree<>();
+        BinaryTree<Integer> binaryTree = new BinaryTree<>();
         binaryTree.insert(8);
         binaryTree.insert(10);
         binaryTree.insert(3);
@@ -21,17 +22,32 @@ public class Main {
         binaryTree.insert(23);
         binaryTree.insert(24);
 
-        System.out.println("Дерево до удаления:");
-        binaryTree.widthFirstCrawl();
-        binaryTree.remove(14);
-        System.out.println("Дерево после удаления:");
-        binaryTree.widthFirstCrawl();
+        Consumer<Integer> print = value -> System.out.printf("%s; ", value);
 
-        TreeNode<Integer> node = binaryTree.search(1);
-        if (node != null) {
-            System.out.println("Значение найденной ноды: " + node);
+        System.out.println("Дерево до удаления:");
+        binaryTree.traversalForWidth(print);
+        System.out.println();
+
+        System.out.println(binaryTree.remove(14));
+        System.out.println("Дерево после удаления:");
+        binaryTree.traversalForWidth(print);
+        System.out.println();
+
+        if (binaryTree.contains(1)) {
+            System.out.println("Значение 1 есть в дереве");
         } else {
-            System.out.println("Нода не найдена");
+            System.out.println("Значение нет в дереве");
         }
+
+        System.out.println("Обход дерева в ширину:");
+        binaryTree.traversalForWidth(print);
+        System.out.println();
+
+        System.out.println("Обход дерева в глубину без рекурсии:");
+        binaryTree.traversalForDepth(print);
+        System.out.println();
+
+        System.out.println("Обход дерева в глубину с рекурсией:");
+        binaryTree.traversalForDepthWithRecursion(print);
     }
 }

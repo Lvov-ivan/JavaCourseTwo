@@ -272,15 +272,19 @@ public class HashTable<E> implements Collection<E> {
 
             if (listIterator == null || !listIterator.hasNext()) {
                 listIndex++;
+                listIterator = null;
+            }
 
-                while (listIndex <= lists.length && (lists[listIndex] == null) || lists[listIndex].isEmpty()) {
-                    listIndex++;
-                }
+            while (lists[listIndex] == null || lists[listIndex].isEmpty()) {
+                listIndex++;
+            }
 
+            if (listIterator == null) {
                 listIterator = lists[listIndex].iterator();
             }
 
             passedItemsCount++;
+
             return listIterator.next();
         }
     }

@@ -262,9 +262,8 @@ public class Matrix {
 
     public static Matrix getProduct(Matrix matrix1, Matrix matrix2) {
         if (matrix1.getColumnsCount() != matrix2.rows.length) {
-            throw new IllegalArgumentException("Количество столбцов первой матрицы не совпадает с количеством строк второй." +
-                    " Количество столбцов первой матрицы = " + matrix1.getColumnsCount() +
-                    " Количество строк второй матрицы = " + matrix2.rows.length);
+            throw new IllegalArgumentException("Невозможно получить произведение матриц, количество столбцов первой матрицы: "
+                    + matrix1.getColumnsCount() + " не соответствует количеству строк второй матрицы: " + matrix2.rows.length);
         }
 
         Matrix resultMatrix = new Matrix(matrix1.rows.length, matrix2.getColumnsCount());
